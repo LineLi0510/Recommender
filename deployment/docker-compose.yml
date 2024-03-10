@@ -23,5 +23,7 @@ services:
     tty: true
     volumes:
       - ../src:/src
+      - ../documentation:/docs
     ports:
       - 8000:8000
+      - 8001:8001
