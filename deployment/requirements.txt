@@ -5,3 +5,7 @@ SQLAlchemy
 pandas
 prospector
 mypy
+mkdocs~=1.5.3
+mkdocstrings-python~=1.7.3
+mkdocs-material~=9.4.6
+mkdocs-homepage-copier~=0.0.4
