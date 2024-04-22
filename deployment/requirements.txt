@@ -10,3 +10,5 @@ mkdocstrings-python~=1.7.3
 mkdocs-material~=9.4.6
 mkdocs-homepage-copier~=0.0.4
 scipy
+pre-commit
+mypy
