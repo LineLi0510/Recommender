@@ -11,4 +11,19 @@ db_config = {
 
 @ping_router.get('/ping', response_model=None)
 def root() -> str:
-    return 'ping'
+    """
+    Pings the service
+
+    :return: str
+    ---
+    get:
+        description: ping
+        responses:
+            200:
+                content:
+                    text/plain:
+                    schema:
+                        type: string
+                        example: pong
+    """
+    return 'pong'
