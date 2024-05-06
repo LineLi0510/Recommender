@@ -22,6 +22,6 @@ def query_movie_ratings(db: Session, movie_id: int):
 
 
 def query_all_ratings(db: Session):
-    movie_infos = db.query(Ratings).all()
+    movie_infos = db.query(Ratings).limit(10000).all()
 
     return movie_infos

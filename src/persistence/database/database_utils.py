@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from persistence.database.database_setup import Session
 
@@ -6,7 +7,8 @@ from persistence.database.database_setup import Session
 def import_dataframe_to_database(orm_class, data: pd.DataFrame) -> None:
     session = Session()
     for _, row in data.iterrows():
-        obj = orm_class(**row)
+        cleaned_row = {key: float(value) if isinstance(value, np.float64) else value for key, value in row.items()}
+        obj = orm_class(**cleaned_row)
         session.add(obj)
 
     session.commit()

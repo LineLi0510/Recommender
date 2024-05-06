@@ -6,7 +6,6 @@ from persistence.entities.base import Base
 class Ratings(Base):
     __tablename__ = 'ratings'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, nullable=False)
-    movie_id = Column(Integer, nullable=False)
+    user_id = Column(Float, nullable=False)
+    movie_id = Column(Float, nullable=False)
     rating = Column(Float, nullable=False)
-    timestamp = Column(DateTime, nullable=False)

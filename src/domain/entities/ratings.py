@@ -8,4 +8,3 @@ class Ratings(BaseModel):
     user_id: int
     movie_id: int
     rating: float
-    timestamp: datetime

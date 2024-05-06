@@ -12,3 +12,5 @@ mkdocs-homepage-copier~=0.0.4
 scipy
 pre-commit
 mypy
+scikit-surprise
+mlflow

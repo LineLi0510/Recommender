@@ -1,15 +1,18 @@
 import pickle
-from typing import List, Tuple
-
-from scipy.sparse import csr_matrix
+from typing import List, Tuple, Dict
 
 from domain.entities.ratings import Ratings
 from domain.entities.train_data import TrainData
+from domain.model_training.train_config import TrainConfig
+from scipy.sparse import csr_matrix
 
 
 class TrainDataCreator:
+    def __init__(self, train_config: TrainConfig) -> None:
+        self.train_config = train_config
+
     @staticmethod
-    def _create_id_mapping(id_list) -> Tuple[dict[int, int], dict[int, int]]:
+    def _create_id_mapping(id_list) -> Tuple[Dict[int, int], Dict[int, int]]:
         id_to_feature_id = {i: object_id for i, object_id in enumerate(set(id_list))}
         feature_id_to_id = {object_id: i for i, object_id in enumerate(set(id_list))}
 
