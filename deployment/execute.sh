@@ -1,1 +1,1 @@
-docker exec -it python python /src/test.py
+docker exec -it python python /src/application.py

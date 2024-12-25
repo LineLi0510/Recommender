@@ -10,10 +10,14 @@ services:
       MYSQL_DATABASE: my_database
       MYSQL_USER: user
       MYSQL_PASSWORD: user_password
+    volumes:
+      - ./rec-db-data:/var/lib/mysql
     tty: true
+
   api:
     depends_on:
       - mysql
+      - optuna-init
     container_name: python
     image: python
     platform: linux/x86_64
@@ -24,9 +28,76 @@ services:
     volumes:
       - ../src:/src
       - ../documentation:/docs
-      - ../mlflow:/mlflow
+      - ../data:/data
     ports:
       - 8000:8000
       - 8001:8001
-      - 5000:5000
-    command: ["mlflow"]
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow
+    container_name: mlflow
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5001
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5001
+      --default-artifact-root /mlflow/artifacts
+    volumes:
+      - ./mlflow.db:/mlflow/mlflow.db
+      - ../data:/data
+    ports:
+      - 5001:5001
+
+  optuna-db:
+    image: mysql:8.0
+    container_name: optuna-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: optuna
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - 3307:3306
+    volumes:
+      - ./optuna-db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "user", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  optuna-init:
+    build:
+      dockerfile: optuna-init.Dockerfile
+    depends_on:
+      optuna-db:
+        condition: service_healthy
+    restart: "no"
+
+  optuna-dashboard:
+    container_name: optuna-dashboard
+    image: ghcr.io/optuna/optuna-dashboard:latest
+    platform: linux/x86_64
+    ports:
+      - "8080:8080"
+    depends_on:
+      - optuna-db
+      - optuna-init
+    command:
+      - "mysql+pymysql://user:password@optuna-db/optuna"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+
+
+
+volumes:
+  rec_data:
+  mlflow.db:
+  artifacts:
+  optuna_data:
+  optuna-db-data:
+
+

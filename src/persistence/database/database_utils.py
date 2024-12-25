@@ -1,17 +1,16 @@
 import pandas as pd
 import numpy as np
 
-from persistence.database.database_setup import Session
+from src.persistence.database.database_setup import Session
 
 
-def import_dataframe_to_database(orm_class, data: pd.DataFrame) -> None:
-    session = Session()
-    for _, row in data.iterrows():
-        cleaned_row = {key: float(value) if isinstance(value, np.float64) else value for key, value in row.items()}
-        obj = orm_class(**cleaned_row)
-        session.add(obj)
-
-    session.commit()
+def import_dataframe_to_database(orm_class, data: pd.DataFrame, session: Session) -> None:
+    records = data.to_dict("records")
+    cleaned_records = [
+        {key: float(value) if isinstance(value, np.float64) else value for key, value in record.items()}
+        for record in records
+    ]
+    session.bulk_insert_mappings(orm_class, cleaned_records)
 
 
 def delete_table(engine, table) -> None:

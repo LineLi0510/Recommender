@@ -1,4 +1,4 @@
-from datetime import datetime
+from typing import List
 
 from pydantic import BaseModel
 
@@ -8,3 +8,7 @@ class Ratings(BaseModel):
     user_id: int
     movie_id: int
     rating: float
+
+
+class RatingData(BaseModel):
+    data: List[Ratings]

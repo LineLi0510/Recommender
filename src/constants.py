@@ -1,0 +1,1 @@
+mlf_tracking_uri: str = 'http://mlflow:5001'

@@ -12,5 +12,11 @@ mkdocs-homepage-copier~=0.0.4
 scipy
 pre-commit
 mypy
-scikit-surprise
+numpy==1.21.6
+tqdm
+scikit-learn
 mlflow
+scikit-surprise
+psutil
+optuna
+optuna-dashboard
