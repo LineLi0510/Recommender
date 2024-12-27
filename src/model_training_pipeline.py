@@ -7,25 +7,33 @@ from domain.models.model_technologies.surprise.surprise_hyper_parameter_objectiv
 from domain.models.model_technologies.surprise.surprise_model import SurpriseRecommenderModel
 from domain.models.hyperparameter_tuning_technologies.optuna_hyperparameter_tuner import OptunaHyperparameterTuner
 
-surprise_svd = SurpriseModelSetup(
-    model_name="SVD",
-    model_class = SurpriseRecommenderModel,
-    algo=SVD,
-    algo_params={},
-    model_path='/data/models/surprise/svd.pkl',
-    cross_validator=SurpriseCrossValidator,
-    cross_validation_params={
-        'measures': ['RMSE', 'MAE'],
-        'cv': 5},
-    hyperparameter_tuner=OptunaHyperparameterTuner,
-    hyperparameter_objective=SurpriseHyperparameterObjective,
-    hyperparameter_tuning_config={
-        'n_factors': {'type': 'int', 'low': 20, 'high': 400},
-        'n_epochs': {'type': 'int', 'low':5, 'high': 50},
-        'lr_all': {'type': 'loguniform', 'low': 1e-4, 'high': 1e-1},
-        'reg_all': {'type': 'loguniform', 'low': 1e-4, 'high': 1e-1}
-    }
-    )
+# surprise_svd = SurpriseModelSetup(
+#     model_name="SVD",
+#     model_class = SurpriseRecommenderModel,
+#     algo=SVD,
+#     algo_params={},
+#     model_path='/data/models/surprise/svd.pkl',
+#     runner_commands=[
+#         TrainingRunnerCommand(),
+#         CvRunnerCommand(
+#             tracker=None,
+#             cross_validator=SurpriseCrossValidator,
+#             cross_validation_params={
+#                 'measures': ['RMSE', 'MAE'],
+#                 'cv': 5}
+#         ),
+#         HyperparameterTuningRunnerCommand(
+#             hyperparameter_tuner=OptunaHyperparameterTuner,
+#             hyperparameter_objective=SurpriseHyperparameterObjective,
+#             hyperparameter_tuning_config={
+#                 'n_factors': {'type': 'int', 'low': 20, 'high': 400},
+#                 'n_epochs': {'type': 'int', 'low':5, 'high': 50},
+#                 'lr_all': {'type': 'loguniform', 'low': 1e-4, 'high': 1e-1},
+#                 'reg_all': {'type': 'loguniform', 'low': 1e-4, 'high': 1e-1}
+#             }
+#         )
+#     ]
+#     )
 
 surprise_knn = SurpriseModelSetup(
     model_name="KNN",
@@ -72,4 +80,4 @@ surprise_knn_als = SurpriseModelSetup(
     hyperparameter_tuning_config=None
     )
 
-models_to_train = [surprise_svd, surprise_knn, surprise_knn_als]
+models_to_train = [surprise_knn, surprise_knn_als]

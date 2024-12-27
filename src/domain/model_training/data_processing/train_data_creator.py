@@ -1,14 +1,15 @@
 import pickle
-from typing import List, Tuple, Dict
+from typing import Tuple, Dict
 
-from domain.entities.ratings import Ratings, RatingData
-from domain.entities.train_data import TrainData
-from domain.model_training.train_config import TrainConfig
 from scipy.sparse import csr_matrix
+
+from domain.entities.ratings import RatingData
+from domain.entities.train_data import TrainData
+from domain.model_training.train_config import DataProcessingConfig
 
 
 class TrainDataCreator:
-    def __init__(self, train_config: TrainConfig) -> None:
+    def __init__(self, train_config: DataProcessingConfig) -> None:
         self.train_config = train_config
 
     @staticmethod

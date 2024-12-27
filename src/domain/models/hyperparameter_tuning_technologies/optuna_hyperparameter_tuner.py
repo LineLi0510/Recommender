@@ -6,7 +6,6 @@ import optuna
 from optuna.storages import RDBStorage
 from optuna.visualization import plot_optimization_history, plot_param_importances
 
-from domain.entities.model_setup import AbstractModelSetup
 from domain.entities.train_data import TrainData
 from domain.models.abstract_hyperparameter_tuner import AbstractHyperparameterTuner
 
@@ -108,7 +107,7 @@ class OptunaHyperparameterTuner(AbstractHyperparameterTuner):
 
     def run_hyperparameter_tuning(
             self,
-            model_setup: AbstractModelSetup,
+            model_setup,
             data_set: TrainData,
             objective_method: Callable
     ) -> None:

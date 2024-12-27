@@ -1,5 +1,4 @@
 from domain.data_provider import RatingDataProvider
-from domain.model_training.train_config import TrainConfig
 from persistence.db_service import DbService
 
 from src.domain.entities.ratings import RatingData
