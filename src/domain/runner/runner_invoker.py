@@ -5,7 +5,10 @@ from domain.runner.runner_commands.runner_command import RunnerCommand
 
 
 class RunnerInvoker:
-    @staticmethod
-    def run_commands(runner_commands: List[RunnerCommand], data_set: TrainData):
-        for command in runner_commands:
+    def __init__(self, runner_commands: List[RunnerCommand]):
+        self._runner_commands: List[RunnerCommand] = runner_commands
+
+
+    def run_commands(self, data_set: TrainData):
+        for command in self._runner_commands:
             command.execute(data_set=data_set)

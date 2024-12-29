@@ -1,7 +1,7 @@
 from surprise import KNNBasic
 from surprise import SVD
 
-from domain.entities.model_setup import SurpriseModelSetup
+from domain.entities.model_setup import ModelSetup
 from domain.models.model_technologies.surprise.surprise_cross_validator import SurpriseCrossValidator
 from domain.models.model_technologies.surprise.surprise_hyper_parameter_objective import SurpriseHyperparameterObjective
 from domain.models.model_technologies.surprise.surprise_model import SurpriseRecommenderModel
@@ -35,7 +35,7 @@ from domain.models.hyperparameter_tuning_technologies.optuna_hyperparameter_tune
 #     ]
 #     )
 
-surprise_knn = SurpriseModelSetup(
+surprise_knn = ModelSetup(
     model_name="KNN",
     model_class = SurpriseRecommenderModel,
     model_path='/data/models/surprise/knn_base.pkl',
@@ -59,7 +59,7 @@ surprise_knn = SurpriseModelSetup(
 )
 
 
-surprise_knn_als = SurpriseModelSetup(
+surprise_knn_als = ModelSetup(
     model_name="KNN_ALS",
     model_class = SurpriseRecommenderModel,
     model_path='/data/models/surprise/knn_als.pkl',

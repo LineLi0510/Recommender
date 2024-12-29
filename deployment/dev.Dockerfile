@@ -4,7 +4,10 @@ FROM python:3.10
 WORKDIR /src
 
 COPY . .
-RUN pip install --no-cache-dir -r  requirements.txt
+RUN pip install --no-cache-dir numpy==1.21.6 scikit-surprise
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8000 8001

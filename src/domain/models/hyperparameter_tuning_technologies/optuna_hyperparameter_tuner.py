@@ -102,7 +102,7 @@ class OptunaHyperparameterTuner(AbstractHyperparameterTuner):
         else:
             study = optuna.load_study(study_name=study_name, storage=self._storage)
 
-        study.optimize(trial_handler, n_trials=100)
+        study.optimize(trial_handler, n_trials=10)
         self._show_result(study=study)
 
     def run_hyperparameter_tuning(

@@ -3,7 +3,7 @@ from datetime import datetime
 from domain.model_training.data_loader.raw_data_loader import RawDataLoader
 from domain.model_training.data_processing.train_data_creator import TrainDataCreator
 from domain.model_training.train_config import TrainConfig
-from model_training_pipeline import models_to_train
+from archiv.model_training_pipeline import models_to_train
 from persistence.database.database_setup import engine
 from persistence.db_service import DbService
 from persistence.entities.base import Base

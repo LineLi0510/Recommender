@@ -8,8 +8,13 @@ from src.domain.entities.train_data import TrainData
 
 
 class SurpriseCrossValidator(AbstractCrossValidator):
-    def __init__(self, algo, algo_params, cross_validation_setup: Dict[str, Any]) -> None:
-        super().__init__(algo=algo, algo_params=algo_params, cross_validation_setup=cross_validation_setup)
+    def __init__(
+            self,
+            algo,
+            algo_params: Dict[str, Any],
+            cross_validation_params: Dict[str, Any]
+    ) -> None:
+        super().__init__(algo=algo, algo_params=algo_params, cross_validation_params=cross_validation_params)
 
     def cross_validate_model(self, data_set: TrainData) -> Dict[str, Any]:
         """
