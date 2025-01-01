@@ -11,9 +11,10 @@ from domain.models.abstract_hyperparameter_tuner import AbstractHyperparameterTu
 
 
 class OptunaHyperparameterTuner(AbstractHyperparameterTuner):
-    def __init__(self):
+    def __init__(self, trials: int = 10) -> None:
         self._storage = RDBStorage(url="mysql+mysqlconnector://user:password@optuna-db/optuna")
         self.hyperparameter_config = None
+        self._trials = trials
 
     def _check_study_existence(self, study_name: str) -> bool:
         """
@@ -83,6 +84,8 @@ class OptunaHyperparameterTuner(AbstractHyperparameterTuner):
         """
         if param_values['type'] == 'int':
             return trial.suggest_int(name=param_name, low=param_values['low'], high=param_values['high'])
+        elif param_values['type'] == 'float':
+            return trial.suggest_float(name=param_name, low=param_values['low'], high=param_values['high'])
         elif param_values['type'] == 'loguniform':
             return trial.suggest_loguniform(param_name, param_values['low'], param_values['high'])
         elif param_values['type'] == 'categorical':
@@ -102,7 +105,7 @@ class OptunaHyperparameterTuner(AbstractHyperparameterTuner):
         else:
             study = optuna.load_study(study_name=study_name, storage=self._storage)
 
-        study.optimize(trial_handler, n_trials=10)
+        study.optimize(trial_handler, n_trials=self._trials)
         self._show_result(study=study)
 
     def run_hyperparameter_tuning(

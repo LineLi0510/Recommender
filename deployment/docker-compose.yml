@@ -20,7 +20,7 @@ services:
       - optuna-init
     container_name: python
     image: python
-    platform: linux/x86_64
+    platform: linux/arm64
     build:
       dockerfile: dev.Dockerfile
     restart: unless-stopped

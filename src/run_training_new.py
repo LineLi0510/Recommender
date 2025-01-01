@@ -15,8 +15,8 @@ from persistence.entities.base import Base
 Base.metadata.create_all(engine)
 chunksize = 100000
 
-train_models = True
-run_cross_validation = True
+train_models = False
+run_cross_validation = False
 run_hyperparametertuning = True
 
 TRACKER = MlFlowTracker

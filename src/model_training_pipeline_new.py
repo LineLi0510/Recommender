@@ -5,7 +5,10 @@ from domain.models.hyperparameter_tuning_technologies.optuna_hyperparameter_tune
 from domain.models.model_technologies.surprise.surprise_cross_validator import SurpriseCrossValidator
 from domain.models.model_technologies.surprise.surprise_hyper_parameter_objective import SurpriseHyperparameterObjective
 from domain.models.model_technologies.surprise.surprise_model import SurpriseRecommenderModel
-
+from domain.models.model_technologies.tensorflow.tf_algos.base_algo import TfBaseAlgo
+from domain.models.model_technologies.tensorflow.tf_algos.dropout_algo import TfL2RegAlgo
+from domain.models.model_technologies.tensorflow.tf_hyper_parameter_objective import TfHyperparameterObjective
+from domain.models.model_technologies.tensorflow.tf_model import TensorFlowRecommenderModel
 
 surprise_svd = ModelSetup(
     model_name = 'SVD',
@@ -17,7 +20,7 @@ surprise_svd = ModelSetup(
     cross_validation_params={
         'measures': ['RMSE', 'MAE'],
         'cv': 5},
-    hyperparameter_tuner=OptunaHyperparameterTuner,
+    hyperparameter_tuner=OptunaHyperparameterTuner(trials=20),
     hyperparameter_objective=SurpriseHyperparameterObjective,
     hyperparameter_tuning_config={
         'n_factors': {'type': 'int', 'low': 20, 'high': 500},
@@ -43,6 +46,8 @@ surprise_knn = ModelSetup(
     cross_validation_params={
         'measures': ['RMSE', 'MAE'],
         'cv': 5},
+    hyperparameter_tuner=OptunaHyperparameterTuner(trials=20),
+    hyperparameter_objective=SurpriseHyperparameterObjective,
     hyperparameter_tuning_config={
         'k': {'type': 'int', 'low': 10, 'high': 100},  # Anzahl der Nachbarn
         'sim_options.name': {'type': 'categorical', 'values': ['cosine', 'msd', 'pearson']},  # Ähnlichkeitsmetrik
@@ -73,6 +78,61 @@ surprise_knn_als = ModelSetup(
     hyperparameter_tuning_config=None
     )
 
+tf_base = ModelSetup(
+    model_name="tf_base",
+    model_class = TensorFlowRecommenderModel,
+    model_path='/data/models/surprise/tf.pkl',
+    algo=TfBaseAlgo,
+    algo_params={
+        'embedding_dim': 32,
+        'optimizer': 'adam',
+        'loss': 'mse',
+        'metrics': ['mae'],
+        'activation': "relu",
+        'epochs': 15
+
+    },
+    cross_validator=None,
+    cross_validation_params={},
+    hyperparameter_tuner=OptunaHyperparameterTuner(trials=20),
+    hyperparameter_objective=TfHyperparameterObjective,
+    hyperparameter_tuning_config= {
+        'embedding_dim': {'type': 'int', 'low': 16, 'high': 128},
+        'optimizer': {'type': 'categorical', 'values': ["adam", "sgd", "rmsprop"]},
+        'activation': {'type': 'categorical', 'values': ["relu", "tanh", "sigmoid"]},
+        'epochs': {'type': 'int', 'low': 5, 'high': 15}
+    }
+    )
+
+tf_regularized = ModelSetup(
+    model_name="tf_regularized",
+    model_class = TensorFlowRecommenderModel,
+    model_path='/data/models/surprise/tf_regularized.pkl',
+    algo=TfL2RegAlgo,
+    algo_params={
+        'embedding_dim': 32,
+        'optimizer': 'adam',
+        'loss': 'mse',
+        'metrics': ['mae'],
+        'activation': "relu",
+        'epochs': 15,
+        'dropout': 0.2,
+        'l2_regularization': 1e-6
+
+    },
+    cross_validator=None,
+    cross_validation_params={},
+    hyperparameter_tuner=OptunaHyperparameterTuner(trials=20),
+    hyperparameter_objective=TfHyperparameterObjective,
+    hyperparameter_tuning_config= {
+        'embedding_dim': {'type': 'int', 'low': 16, 'high': 128},
+        'optimizer': {'type': 'categorical', 'values': ["adam", "sgd", "rmsprop"]},
+        'activation': {'type': 'categorical', 'values': ["relu", "tanh", "sigmoid"]},
+        'l2_regularization': {'type': 'float', 'low': 1e-6, 'high': 1e-3},
+        'epochs': {'type': 'int', 'low': 5, 'high': 15}
+    }
+    )
 
 
-models_to_train = [surprise_svd, surprise_knn, surprise_knn_als]
+
+models_to_train = [tf_base, tf_regularized]

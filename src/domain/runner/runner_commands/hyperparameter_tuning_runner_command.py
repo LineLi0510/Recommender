@@ -10,7 +10,7 @@ class HyperparameterTuningRunnerCommand(RunnerCommand):
     def execute(self, data_set: TrainData) -> None:
         try:
             if self._model_setup.hyperparameter_tuning_config:
-                model_hyperparameter_tuner = self._model_setup.hyperparameter_tuner()
+                model_hyperparameter_tuner = self._model_setup.hyperparameter_tuner
                 model_hyperparameter_tuner.run_hyperparameter_tuning(
                     model_setup=self._model_setup,
                     data_set=data_set,
